@@ -1,9 +1,7 @@
 import React from 'react'
 
-const HomeSection = () => {
+export default function HomeSection() {
   return (
     <div>HomeSection</div>
   )
 }
-
-export default HomeSection;
