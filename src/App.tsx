@@ -1,11 +1,13 @@
 import './App.css';
 import { Navbar } from './components/navbar/Navbar';
+import Products from './components/product/Products';
 
 function App() {
   return (
-   <>
-   <Navbar/>
-   </>
+    <>
+      <Navbar />
+      <Products />
+    </>
   );
 }
 
