@@ -101,18 +101,18 @@ export const Navbar = ({ isAuthenticated = false }) => {
               
               {!isAuthenticated ? (
                 <div className="flex flex-col space-y-3 pt-4 border-t border-gray-100">
-                  <button 
+                <a href="..//auth/login">  <button 
                     className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors duration-200 font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
-                  </button>
-                  <button 
+                  </button></a>
+                 <a href="..//auth/signup"> <button 
                     className="px-4 py-2 border border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-200 font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Signup
-                  </button>
+                  </button></a>
                 </div>
               ) : (
                 <div className="pt-4 border-t border-gray-100">
