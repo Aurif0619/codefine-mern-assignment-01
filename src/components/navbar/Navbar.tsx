@@ -7,7 +7,6 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
   const [cartCount ] = useState(0);
   const [cartTotal] = useState(0);
 
-
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Products', href: '/products' },
@@ -15,10 +14,6 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleCartClick = () => {
-    window.location.href = '/cart';
   };
 
   return (
@@ -50,7 +45,6 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
           <div className="hidden md:flex items-center space-x-6">
             <div className="relative">
               <button
-                onClick={handleCartClick}
                 onMouseEnter={() => setIsCartHovered(true)}
                 onMouseLeave={() => setIsCartHovered(false)}
                 className="relative p-2 rounded-full hover:bg-gray-100 transition-all duration-200 group"
