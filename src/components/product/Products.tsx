@@ -26,7 +26,7 @@ export default function Products() {
 
   return (
     <div>
-      <h2>Products</h2>
+      <h2>Products...</h2>
       <div>
         {products.map((product) => (
           <div key={product.id}>

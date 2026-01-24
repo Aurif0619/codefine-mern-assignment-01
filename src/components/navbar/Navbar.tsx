@@ -4,10 +4,8 @@ export const Navbar = ({ isAuthenticated = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: 'Home', href: '#' },
-    { label: 'Products', href: '#' },
-    { label: 'About', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '../product/' },
   ];
 
   const toggleMenu = () => {
@@ -19,27 +17,24 @@ export const Navbar = ({ isAuthenticated = false }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           
-          {/* Logo/Brand */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-gray-800 cursor-pointer">
-              MyStore
-            </h1>
+            <h2 className="text-2xl font-bold text-gray-800">
+              Codefine API Web 
+            </h2>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
               <a
                 key={link.label}
-                href={link.href}
-                className="text-gray-700 hover:text-yellow-500 font-medium transition-colors duration-200"
+                href={link.href} 
+                className="text-gray-700 hover:text-yellow-500 font-medium text-decoration-none transition-colors duration-200"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {!isAuthenticated ? (
               <>
@@ -66,7 +61,6 @@ export const Navbar = ({ isAuthenticated = false }) => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
             {isAuthenticated && (
               <button 
@@ -84,7 +78,6 @@ export const Navbar = ({ isAuthenticated = false }) => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-100 py-4">
             <div className="flex flex-col space-y-3">
@@ -93,8 +86,7 @@ export const Navbar = ({ isAuthenticated = false }) => {
                   key={link.label}
                   href={link.href}
                   className="text-gray-700 hover:text-yellow-500 font-medium py-2 px-4 hover:bg-yellow-50 rounded transition-colors duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                  onClick={() => setIsMenuOpen(false)}>
                   {link.label}
                 </a>
               ))}
@@ -103,10 +95,10 @@ export const Navbar = ({ isAuthenticated = false }) => {
                 <div className="flex flex-col space-y-3 pt-4 border-t border-gray-100">
                 <a href="..//auth/login">  <button 
                     className="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors duration-200 font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
+                    onClick={() => setIsMenuOpen(false)}>
                     Login
                   </button></a>
+                  
                  <a href="..//auth/signup"> <button 
                     className="px-4 py-2 border border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-200 font-medium"
                     onClick={() => setIsMenuOpen(false)}
