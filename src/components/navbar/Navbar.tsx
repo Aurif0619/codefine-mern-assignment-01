@@ -117,14 +117,14 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
 
             {!isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <Link to="/auth/login">
+                <Link to={'../auth/login'}>
                   <button 
                     className="px-5 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-full hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 font-medium shadow-md hover:shadow-lg"
                   >
                     Login
                   </button>
                 </Link>
-                <Link to="/auth/signup">
+                <Link to={'../auth/signup'}>
                   <button 
                     className="px-5 py-2 border-2 border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-500 hover:text-white transition-all duration-300 font-medium"
                   >
@@ -215,7 +215,7 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
 
               {!isAuthenticated ? (
                 <div className="flex flex-col space-y-3 pt-4 border-t border-gray-100">
-                  <Link to="/auth/login">
+                  <Link to={'../auth/login'}>
                     <button 
                       className="w-full px-4 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors duration-200 font-medium"
                       onClick={() => setIsMenuOpen(false)}
@@ -223,7 +223,7 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
                       Login
                     </button>
                   </Link>
-                  <Link to="/auth/signup">
+                  <Link to={'../auth/signup'}>
                     <button 
                       className="w-full px-4 py-3 border-2 border-yellow-500 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-white transition-colors duration-200 font-medium"
                       onClick={() => setIsMenuOpen(false)}
