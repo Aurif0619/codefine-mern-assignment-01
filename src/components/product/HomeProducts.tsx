@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 type Product = {
   id: number;
@@ -9,10 +10,15 @@ type Product = {
   category: string;
 };
 
+type OutletContextType = {
+  addToCart: (product: Product) => void;
+  cartItems: { id: number }[];
+};
+
 export default function HomeProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<number[]>([]);
+  const { addToCart, cartItems } = useOutletContext<OutletContextType>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,10 +37,10 @@ export default function HomeProducts() {
     fetchData();
   }, []);
 
-  const addToCart = (productId: number) => {
-    setCart(prev => [...prev, productId]);
-
-    const button = document.getElementById(`cart-btn-${productId}`);
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    
+    const button = document.getElementById(`cart-btn-${product.id}`);
     if (button) {
       button.classList.add('scale-95');
       setTimeout(() => {
@@ -43,12 +49,8 @@ export default function HomeProducts() {
     }
   };
 
-  const removeFromCart = (productId: number) => {
-    setCart(prev => prev.filter(id => id !== productId));
-  };
-
   const isInCart = (productId: number) => {
-    return cart.includes(productId);
+    return cartItems.some(item => item.id === productId);
   };
 
   if (loading) {
@@ -69,16 +71,8 @@ export default function HomeProducts() {
         </p>
         <div className="mt-6 flex items-center justify-center space-x-4">
           <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full font-medium">
-            {cart.length} items in cart
+            {cartItems.length} items in cart
           </span>
-          {cart.length > 0 && (
-            <button 
-              onClick={() => setCart([])}
-              className="px-4 py-2 text-sm bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition-colors"
-            >
-              Clear Cart
-            </button>
-          )}
         </div>
       </div>
 
@@ -92,7 +86,7 @@ export default function HomeProducts() {
               <img 
                 src={product.image} 
                 alt={product.title}
-                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300" 
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
               />
  
               <span className="absolute top-3 left-3 px-3 py-1 bg-yellow-500 text-white text-xs font-bold rounded-full">
@@ -121,7 +115,6 @@ export default function HomeProducts() {
               <div className="flex flex-col space-y-3">
                 {isInCart(product.id) ? (
                   <button
-                    onClick={() => removeFromCart(product.id)}
                     className="w-full py-3 bg-red-50 text-red-600 border border-red-200 rounded-lg font-medium hover:bg-red-100 transition-all duration-200 flex items-center justify-center group"
                   >
                     <svg 
@@ -130,14 +123,14 @@ export default function HomeProducts() {
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    Remove from Cart
+                    Already in Cart
                   </button>
                 ) : (
                   <button
                     id={`cart-btn-${product.id}`}
-                    onClick={() => addToCart(product.id)}
+                    onClick={() => handleAddToCart(product)}
                     className="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-medium hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center group"
                   >
                     <svg 
@@ -147,7 +140,6 @@ export default function HomeProducts() {
                       viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Add to Cart
                   </button>
@@ -162,28 +154,29 @@ export default function HomeProducts() {
                 </button>
               </div>
             </div>
-
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-300 pointer-events-none rounded-xl"></div>
           </div>
         ))}
       </div>
 
-      {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-50 animate-bounce">
-          <div className="bg-white rounded-full shadow-2xl p-4 flex items-center space-x-3 border border-gray-200">
+      {cartItems.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <a 
+            href="/cart"
+            className="bg-white rounded-full shadow-2xl p-4 flex items-center space-x-3 border border-gray-200 hover:shadow-xl transition-shadow"
+          >
             <div className="relative">
               <svg className="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                {cart.length}
+                {cartItems.length}
               </span>
             </div>
             <div>
-              <p className="font-bold text-gray-800">{cart.length} items</p>
+              <p className="font-bold text-gray-800">{cartItems.length} items</p>
               <p className="text-sm text-gray-600">View Cart</p>
             </div>
-          </div>
+          </a>
         </div>
       )}
 

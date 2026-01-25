@@ -103,13 +103,14 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
               {isCartHovered && cartCount === 0 && (
                 <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border p-4 z-50 animate-fadeIn">
                   <div className="text-center py-4">
-                    <svg className="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <a href="../cart"> 
+                    <svg className="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"> 
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                    </svg></a>
                     <p className="text-gray-600 font-medium">Your cart is empty</p>
                     <p className="text-sm text-gray-500 mt-1">Add some products to get started!</p>
                   </div>
-                </div>
+                </div> 
               )}
             </div>
 
@@ -206,8 +207,7 @@ export const Navbar = ({ isAuthenticated = false, cartItems = [] }) => {
                 <Link 
                   to="/cart"
                   className="block w-full mt-2 py-3 bg-yellow-500 text-white text-center rounded-lg hover:bg-yellow-600 transition-colors duration-200 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                  onClick={() => setIsMenuOpen(false)}>
                   View Cart
                 </Link>
               </div>
