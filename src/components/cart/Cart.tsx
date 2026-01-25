@@ -22,7 +22,7 @@ export default function Cart() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Shopping Cart</h1>
       
       {cartItems.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-xl">
