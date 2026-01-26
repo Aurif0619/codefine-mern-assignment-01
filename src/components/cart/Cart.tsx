@@ -1,22 +1,67 @@
 import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export type CartItem = {
   id: number;
   title: string;
   price: number;
   image: string;
+  quantity: number;
 };
 
 type OutletContextType = {
   cartItems: CartItem[];
   removeFromCart: (id: number) => void;
+  updateCartQuantity: (id: number, quantity: number) => void; 
 };
 
 export default function Cart() {
-  const { cartItems, removeFromCart } = useOutletContext<OutletContextType>();
+  const { cartItems, removeFromCart, updateCartQuantity } = useOutletContext<OutletContextType>();
+  
+  const [localQuantities, setLocalQuantities] = useState<{[key: number]: number}>({});
 
-  const cartTotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+  useEffect(() => {
+    const initialQuantities: {[key: number]: number} = {};
+    cartItems.forEach(item => {
+      initialQuantities[item.id] = item.quantity || 1;
+    });
+    setLocalQuantities(initialQuantities);
+  }, [cartItems]);
+
+  const handleQuantityChange = (itemId: number, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    
+    setLocalQuantities(prev => ({
+      ...prev,
+      [itemId]: newQuantity
+    }));
+    
+    if (updateCartQuantity) {
+      updateCartQuantity(itemId, newQuantity);
+    }
+  };
+
+  const incrementQuantity = (itemId: number) => {
+    const currentQty = localQuantities[itemId] || 1;
+    handleQuantityChange(itemId, currentQty + 1);
+  };
+
+  const decrementQuantity = (itemId: number) => {
+    const currentQty = localQuantities[itemId] || 1;
+    if (currentQty > 1) {
+      handleQuantityChange(itemId, currentQty - 1);
+    }
+  };
+
+  const cartTotal = cartItems.reduce((sum, item) => {
+    const quantity = localQuantities[item.id] || 1;
+    return sum + (item.price * quantity);
+  }, 0);
+
+  const totalItemsCount = cartItems.reduce((sum, item) => {
+    return sum + (localQuantities[item.id] || 1);
+  }, 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white py-8">
@@ -47,41 +92,82 @@ export default function Cart() {
         ) : (
           <>
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex items-center p-6 border-b border-rose-100 hover:bg-rose-50 transition-colors group">
-                  <div className="w-24 h-24 bg-gradient-to-br from-rose-50 to-red-50 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
-                    <img 
-                      src={item.image} 
-                      alt={item.title}
-                      className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform"
-                    />
+              {cartItems.map((item) => {
+                const quantity = localQuantities[item.id] || 1;
+                const itemTotal = item.price * quantity;
+                
+                return (
+                  <div key={item.id} className="flex flex-col md:flex-row items-center p-6 border-b border-rose-100 hover:bg-rose-50 transition-colors group">
+                    <div className="w-24 h-24 bg-gradient-to-br from-rose-50 to-red-50 rounded-xl overflow-hidden flex-shrink-0 shadow-sm mb-4 md:mb-0">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    
+                    <div className="ml-0 md:ml-6 flex-grow text-center md:text-left mb-4 md:mb-0">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-rose-700">{item.title}</h3>
+                      <p className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
+                        ${item.price.toFixed(2)}
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                      <div className="flex items-center bg-gradient-to-r from-rose-50 to-red-50 rounded-full shadow-sm">
+                        <button
+                          onClick={() => decrementQuantity(item.id)}
+                          className="p-2 text-rose-600 hover:text-rose-700 hover:bg-rose-100 rounded-l-full transition-colors"
+                          disabled={quantity <= 1}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+                          </svg>
+                        </button>
+                        
+                        <span className="px-4 py-2 text-lg font-bold text-gray-800 min-w-[50px] text-center">
+                          {quantity}
+                        </span>
+                        
+                        <button
+                          onClick={() => incrementQuantity(item.id)}
+                          className="p-2 text-rose-600 hover:text-rose-700 hover:bg-rose-100 rounded-r-full transition-colors"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                        </button>
+                      </div>
+                      
+                        <div className="text-right">
+                        <p className="text-lg font-bold text-gray-800">
+                          ${itemTotal.toFixed(2)}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {quantity} × ${item.price.toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="ml-0 md:ml-4 p-3 bg-gradient-to-r from-rose-50 to-red-50 text-rose-600 hover:text-rose-700 rounded-full hover:from-rose-100 hover:to-red-100 transition-all duration-200 shadow-sm hover:shadow-md"
+                      title="Remove item"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
-                  
-                  <div className="ml-6 flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-rose-700">{item.title}</h3>
-                    <p className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
-                      ${item.price.toFixed(2)}
-                    </p>
-                  </div>
-                  
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="ml-4 p-3 bg-gradient-to-r from-rose-50 to-red-50 text-rose-600 hover:text-rose-700 rounded-full hover:from-rose-100 hover:to-red-100 transition-all duration-200 shadow-sm hover:shadow-md"
-                    title="Remove item"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
             
             <div className="bg-gradient-to-br from-white to-rose-50 rounded-2xl shadow-xl p-8">
-              <div className="flex justify-between items-center mb-8 pb-6 border-b border-rose-100">
+              <div className="flex justify-between items-center mb-6 pb-6 border-b border-rose-100">
                 <div>
                   <span className="text-xl font-medium text-gray-700">Total Items</span>
-                  <p className="text-sm text-gray-500">{cartItems.length} products</p>
+                  <p className="text-sm text-gray-500">{totalItemsCount} {totalItemsCount === 1 ? 'product' : 'products'}</p>
                 </div>
                 <div className="text-right">
                   <span className="text-3xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
@@ -117,7 +203,6 @@ export default function Cart() {
                 </Link>
               </div>
               
-              {/* Security Info */}
               <div className="mt-8 pt-6 border-t border-rose-100">
                 <div className="flex items-center justify-center text-gray-600 text-sm">
                   <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

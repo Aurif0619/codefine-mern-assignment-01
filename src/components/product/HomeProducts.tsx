@@ -57,10 +57,7 @@ export default function HomeProducts() {
         console.log("Fetching products...");
         
         const apiUrls = [
-          "https://fakestoreapi.com/products",
-          "https://api.escuelajs.co/api/v1/products",
-          "https://dummyjson.com/products"
-        ];
+          "https://fakestoreapi.com/products", ];
         
         let success = false;
         
@@ -142,7 +139,7 @@ export default function HomeProducts() {
             },
             {
               id: 4,
-              title: "Coffee Mug",
+              title: "Stylish Jacket ",
               price: 14.99,
               image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Ceramic coffee mug with handle",
@@ -150,19 +147,19 @@ export default function HomeProducts() {
             },
             {
               id: 5,
-              title: "Running Shoes",
+              title: "Clothes",
               price: 89.99,
               image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Comfortable running shoes",
-              category: "Shoes"
+              category: "Clothes"
             },
             {
               id: 6,
-              title: "Wireless Headphones",
+              title: "T Shirt",
               price: 129.99,
               image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Noise cancelling wireless headphones",
-              category: "Electronics"
+              category: "Clothes"
             },
             {
               id: 7,
@@ -329,7 +326,7 @@ export default function HomeProducts() {
                 addedProductId === product.id
                   ? "ring-2 ring-yellow-400 ring-offset-2 animate-pulse"
                   : ""
-              }`}>
+              }`} >
 
               {addedProductId === product.id && (
                 <div className="absolute top-2 right-2 z-10 animate-bounce">
@@ -567,7 +564,6 @@ export default function HomeProducts() {
           </div>
         )}
       </div>
-      
     </div>
   );
 }
