@@ -2,12 +2,12 @@ import "./index.css";
 import { Navbar } from "./components/navbar/Navbar";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import HomeProducts from "./components/product/HomeProducts";
-import { SignUp } from "./components/sign-up/SignUp";
 import { Login } from "./components/login/Login";
 import Cart from "./components/cart/Cart";
 import { useState } from "react";
 import ProductDetail from "./components/product-detail/ProductDetail";
-import { Checkout } from "./components/checkout/Checkout"; // Add this import
+import { Checkout } from "./components/checkout/Checkout"; 
+import SignUp from "./components/sign-up/SignUp";
 
 export type CartItem = {
   id: number;
