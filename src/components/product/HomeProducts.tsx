@@ -27,8 +27,7 @@ type OutletContextType = {
   removeFromCart: (id: number) => void;
 };
 
-const fallbackImages: Record<number, string> = {
-  };
+const fallbackImages: Record<number, string> = {};
 
 export default function HomeProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -37,7 +36,7 @@ export default function HomeProducts() {
   const [addedProductId, setAddedProductId] = useState<number | null>(null);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   const context = useOutletContext() as OutletContextType;
@@ -45,9 +44,14 @@ export default function HomeProducts() {
   const cartItems = context?.cartItems || [];
   const removeFromCart = context?.removeFromCart;
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, productId: number) => {
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>,
+    productId: number,
+  ) => {
     const img = e.target as HTMLImageElement;
-    img.src = fallbackImages[productId] || "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+    img.src =
+      fallbackImages[productId] ||
+      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
   };
 
   useEffect(() => {
@@ -55,27 +59,24 @@ export default function HomeProducts() {
       try {
         setLoading(true);
         console.log("Fetching products...");
-        
-        const apiUrls = [
-          "https://fakestoreapi.com/products", ];
-        
+
+        const apiUrls = ["https://fakestoreapi.com/products"];
+
         let success = false;
-        
+
         for (const url of apiUrls) {
           try {
             console.log(`Trying API: ${url}`);
             const response = await fetch(url);
-            
+
             if (!response.ok) {
               console.log(`API ${url} failed: ${response.status}`);
               continue;
             }
-            
+
             const data = await response.json();
-            
-            // Different APIs have different response structures
             let productsData: Product[] = [];
-            
+
             if (url.includes("fakestoreapi.com")) {
               productsData = data;
             } else if (url.includes("escuelajs.co")) {
@@ -83,9 +84,12 @@ export default function HomeProducts() {
                 id: item.id,
                 title: item.title,
                 price: item.price,
-                image: item.images?.[0] || fallbackImages[item.id] || "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                image:
+                  item.images?.[0] ||
+                  fallbackImages[item.id] ||
+                  "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
                 description: item.description,
-                category: item.category?.name || "General"
+                category: item.category?.name || "General",
               }));
             } else if (url.includes("dummyjson.com")) {
               productsData = data.products.slice(0, 8).map((item: any) => ({
@@ -94,13 +98,15 @@ export default function HomeProducts() {
                 price: item.price,
                 image: item.thumbnail || fallbackImages[item.id],
                 description: item.description,
-                category: item.category || "General"
+                category: item.category || "General",
               }));
             }
-            
+
             if (productsData.length > 0) {
               setProducts(productsData);
-              console.log(`Successfully loaded ${productsData.length} products from ${url}`);
+              console.log(
+                `Successfully loaded ${productsData.length} products from ${url}`,
+              );
               success = true;
               break;
             }
@@ -108,75 +114,82 @@ export default function HomeProducts() {
             console.log(`Error with API ${url}:`, err);
           }
         }
-        
+
         if (!success) {
-          // Use fallback hardcoded products
           console.log("Using fallback products");
           setProducts([
             {
               id: 1,
               title: "Premium Backpack",
               price: 49.99,
-              image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "High-quality backpack for everyday use",
-              category: "Accessories"
+              category: "Accessories",
             },
             {
               id: 2,
               title: "Casual T-Shirt",
               price: 24.99,
-              image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Comfortable cotton t-shirt",
-              category: "Clothing"
+              category: "Clothing",
             },
             {
               id: 3,
               title: "Smart Watch",
               price: 199.99,
-              image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Latest smart watch with fitness tracking",
-              category: "Electronics"
+              category: "Electronics",
             },
             {
               id: 4,
               title: "Stylish Jacket ",
               price: 14.99,
-              image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Ceramic coffee mug with handle",
-              category: "Home"
+              category: "Home",
             },
             {
               id: 5,
               title: "Clothes",
               price: 89.99,
-              image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Comfortable running shoes",
-              category: "Clothes"
+              category: "Clothes",
             },
             {
               id: 6,
               title: "T Shirt",
               price: 129.99,
-              image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Noise cancelling wireless headphones",
-              category: "Clothes"
+              category: "Clothes",
             },
             {
               id: 7,
               title: "Leather Wallet",
               price: 39.99,
-              image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "Genuine leather wallet",
-              category: "Accessories"
+              category: "Accessories",
             },
             {
               id: 8,
               title: "Desk Lamp",
               price: 34.99,
-              image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+              image:
+                "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
               description: "LED desk lamp with adjustable brightness",
-              category: "Home"
-            }
+              category: "Home",
+            },
           ]);
         }
       } catch (error) {
@@ -187,17 +200,15 @@ export default function HomeProducts() {
     };
 
     fetchData();
-    
-    // Handle window resize for confetti
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleAddToCart = (product: Product) => {
@@ -213,11 +224,10 @@ export default function HomeProducts() {
       setAddedProductId(product.id);
       setShowConfetti(true);
 
-      // Show celebration for 3 seconds
       setTimeout(() => {
         setShowConfetti(false);
       }, 3000);
-      
+
       setTimeout(() => {
         setAddedProductId(null);
       }, 3500);
@@ -272,7 +282,7 @@ export default function HomeProducts() {
             recycle={false}
             numberOfPieces={150}
             gravity={0.1}
-            colors={['#FF6B8B', '#FF8E53', '#FFCE00', '#36D1DC', '#5B86E5']}
+            colors={["#FF6B8B", "#FF8E53", "#FFCE00", "#36D1DC", "#5B86E5"]}
           />
           <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-6 py-3 rounded-full shadow-xl animate-bounce z-50">
             <div className="flex items-center space-x-2">
@@ -301,7 +311,8 @@ export default function HomeProducts() {
             Featured Products
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover our amazing collection of premium products with the best prices
+            Discover our amazing collection of premium products with the best
+            prices
           </p>
           <div className="mt-6 flex items-center justify-center space-x-4">
             <span className="px-4 py-2 bg-gradient-to-r from-yellow-100 to-orange-100 text-yellow-800 rounded-full font-medium shadow-sm">
@@ -326,8 +337,8 @@ export default function HomeProducts() {
                 addedProductId === product.id
                   ? "ring-2 ring-yellow-400 ring-offset-2 animate-pulse"
                   : ""
-              }`} >
-
+              }`}
+            >
               {addedProductId === product.id && (
                 <div className="absolute top-2 right-2 z-10 animate-bounce">
                   <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center shadow-lg">
@@ -410,7 +421,6 @@ export default function HomeProducts() {
                     >
                       {/* Button shine effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                      
                       <svg
                         className="w-5 h-5 mr-2 group-hover:animate-bounce"
                         fill="none"

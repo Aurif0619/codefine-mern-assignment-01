@@ -53,7 +53,6 @@ export const Checkout = () => {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -91,19 +90,16 @@ export const Checkout = () => {
     
     setIsProcessing(true);
     
-    // Simulate API call
     setTimeout(() => {
       const newOrderNumber = generateOrderNumber();
       setOrderNumber(newOrderNumber);
       setOrderSuccess(true);
       setIsProcessing(false);
-      
-      // Clear cart after successful order
+
       if (clearCart) {
         clearCart();
       }
       
-      // Auto redirect after 5 seconds
       setTimeout(() => {
         navigate('/');
       }, 5000);
@@ -196,7 +192,6 @@ export const Checkout = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
               <h2 className="text-xl font-bold text-gray-800 mb-6 pb-4 border-b border-rose-100">
@@ -351,7 +346,6 @@ export const Checkout = () => {
                   </div>
                 </div>
                 
-                {/* Payment Method */}
                 <div className="mt-8 pt-6 border-t border-rose-100">
                   <h3 className="text-xl font-bold text-gray-800 mb-6">Payment Method</h3>
                   
@@ -413,14 +407,12 @@ export const Checkout = () => {
             </div>
           </div>
 
-          {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-xl p-6 sticky top-6">
               <h2 className="text-xl font-bold text-gray-800 mb-6 pb-4 border-b border-rose-100">
                 Order Summary
               </h2>
               
-              {/* Cart Items */}
               <div className="space-y-4 mb-6">
                 {cartItems.slice(0, 3).map((item) => (
                   <div key={item.id} className="flex items-center">
@@ -445,7 +437,6 @@ export const Checkout = () => {
                 )}
               </div>
               
-              {/* Price Breakdown */}
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
@@ -463,7 +454,6 @@ export const Checkout = () => {
                 </div>
               </div>
               
-              {/* Total */}
               <div className="flex justify-between items-center py-4 border-t border-b border-rose-100">
                 <span className="text-lg font-bold text-gray-800">Total</span>
                 <span className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
@@ -471,7 +461,6 @@ export const Checkout = () => {
                 </span>
               </div>
               
-              {/* Promo Code */}
               <div className="mt-6">
                 <div className="flex">
                   <input
@@ -488,7 +477,6 @@ export const Checkout = () => {
                 </div>
               </div>
               
-              {/* Security Info */}
               <div className="mt-6 pt-6 border-t border-rose-100">
                 <div className="flex items-center text-gray-600 text-sm">
                   <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
