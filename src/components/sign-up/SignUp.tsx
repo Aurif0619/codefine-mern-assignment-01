@@ -7,7 +7,6 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  // min 8 chars, 1 uppercase, 1 lowercase, 1 number
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
