@@ -71,7 +71,6 @@ export default function ProductDetail() {
 
   const isInCart = product ? cartItems.some(item => item.id === product.id) : false;
 
-  // Skeleton loader
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-12">
@@ -80,7 +79,6 @@ export default function ProductDetail() {
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Image Skeleton */}
               <div className="space-y-4">
                 <div className="h-[400px] bg-gray-200 rounded-xl"></div>
                 <div className="flex space-x-4">
@@ -135,7 +133,6 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
-        {/* Breadcrumb */}
         <nav className="mb-8">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
             <li>
@@ -159,7 +156,6 @@ export default function ProductDetail() {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Images */}
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="h-[400px] flex items-center justify-center">
@@ -171,7 +167,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Image Gallery */}
             <div className="flex space-x-4 overflow-x-auto py-2">
               <button
                 onClick={() => setSelectedImage(product.image)}
@@ -185,11 +180,9 @@ export default function ProductDetail() {
                   className="w-full h-full object-contain p-1"
                 />
               </button>
-              {/* Additional images can be added here if available */}
             </div>
           </div>
 
-          {/* Product Details */}
           <div className="space-y-6">
             <div>
               <span className="inline-block px-4 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full mb-4">
@@ -199,7 +192,6 @@ export default function ProductDetail() {
                 {product.title}
               </h1>
               
-              {/* Rating */}
               <div className="flex items-center space-x-2 mb-4">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -223,7 +215,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Price */}
             <div className="flex items-center space-x-4">
               <span className="text-4xl font-bold text-yellow-600">
                 ${product.price.toFixed(2)}
@@ -233,7 +224,6 @@ export default function ProductDetail() {
               </span>
             </div>
 
-            {/* Description */}
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-gray-900">Description</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -241,7 +231,7 @@ export default function ProductDetail() {
               </p>
             </div>
 
-            {/* Features/Details */}
+          
             <div className="grid grid-cols-2 gap-4 py-6 border-t border-b border-gray-200">
               <div className="space-y-1">
                 <span className="text-sm text-gray-500">Category</span>
@@ -253,7 +243,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Add to Cart */}
             <div className="space-y-4">
               {isInCart ? (
                 <div className="space-y-3">
@@ -290,7 +279,6 @@ export default function ProductDetail() {
               </button>
             </div>
 
-            {/* Shipping Info */}
             <div className="bg-blue-50 rounded-xl p-4 mt-6">
               <div className="flex items-start space-x-3">
                 <svg className="w-6 h-6 text-blue-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -2,11 +2,12 @@ import "./index.css";
 import { Navbar } from "./components/navbar/Navbar";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import HomeProducts from "./components/product/HomeProducts";
-import { SignUp } from "./components/auth/sign-up/SignUp";
-import { Login } from "./components/auth/login/Login";
+import { SignUp } from "./components/sign-up/SignUp";
+import { Login } from "./components/login/Login";
 import Cart from "./components/cart/Cart";
 import { useState } from "react";
 import ProductDetail from "./components/product-detail/ProductDetail";
+import { Checkout } from "./components/checkout/Checkout"; // Add this import
 
 export type CartItem = {
   id: number;
@@ -29,10 +30,14 @@ function Layout() {
     setCartItems(prev => prev.filter(item => item.id !== id));
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return (
     <>
-      <Navbar />
-      <Outlet context={{ addToCart, cartItems, removeFromCart }} />
+      <Navbar cartItems={cartItems} />
+      <Outlet context={{ addToCart, cartItems, removeFromCart, clearCart }} />
     </>
   );
 }
@@ -49,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <Cart />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
       },
       {
         path: "signup",
