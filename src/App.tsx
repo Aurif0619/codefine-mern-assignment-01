@@ -6,7 +6,8 @@ import Cart from "./components/cart/Cart";
 import { useState } from "react";
 import ProductDetail from "./components/product-detail/ProductDetail";
 import { Checkout } from "./components/checkout/Checkout";
-import Login from "./components/login/Login";
+import SignUp from "./components/sign-up/SignUp";
+import { Login } from "./components/login/Login";
 
 export type CartItem = {
   id: number;
@@ -58,10 +59,10 @@ const router = createBrowserRouter([
         path: "checkout",
         element: <Checkout />,
       },
-      // {
-      //   path: "signup",
-      //   element: <SignUp />,
-      // },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
       {
         path: "login",
         element: <Login />,

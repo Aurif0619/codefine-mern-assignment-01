@@ -240,7 +240,6 @@ export const Checkout = () => {
 
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* First Name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       First Name *
@@ -260,7 +259,6 @@ export const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Last Name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Last Name *
@@ -280,7 +278,6 @@ export const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address *
@@ -340,7 +337,6 @@ export const Checkout = () => {
                     )}
                   </div>
 
-                  {/* City */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       City *
@@ -358,7 +354,6 @@ export const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Zip Code */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       ZIP Code *
@@ -378,7 +373,6 @@ export const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Country */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Country
@@ -595,7 +589,6 @@ export const Checkout = () => {
                 </p>
               </div>
 
-              {/* Continue Shopping */}
               <div className="mt-6">
                 <Link
                   to="/cart"
