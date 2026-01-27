@@ -71,14 +71,13 @@ function Layout() {
         removeFromCart, 
         clearCart,
         user,
-        login,  // ✅ small 'l' function
-        logout  // ✅ small 'l' function
+        login, 
+        logout 
       }} />
     </>
   );
 }
 
-// Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   
@@ -124,7 +123,7 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,  // ✅ Component (capital 'L')
+        element: <Login />,  
       },
       {
         path: "product/:id",
