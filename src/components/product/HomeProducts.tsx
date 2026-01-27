@@ -37,7 +37,7 @@ export default function HomeProducts() {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
-  });
+});
 
   const context = useOutletContext() as OutletContextType;
   const addToCart = context?.addToCart;

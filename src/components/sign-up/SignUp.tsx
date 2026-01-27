@@ -10,6 +10,7 @@ export default function SignUp() {
     email?: string;
     password?: string;
   }>({});
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -60,20 +61,17 @@ export default function SignUp() {
 
     setIsLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
       console.log({ name, email, password });
 
-      // Save user data to localStorage
       const userData = {
         name,
         email,
-        password, // Note: In real app, never store plain password
+        password,
         isLoggedIn: true,
         token: `token_${Date.now()}`,
       };
 
-      // Save user to users array
       const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
       localStorage.setItem(
         "users",
@@ -84,9 +82,8 @@ export default function SignUp() {
       setIsLoading(false);
       navigate("/");
 
-      // Show success message
       alert("Account created successfully! You are now logged in.");
-    }, 1500);
+    }, 1000);
   };
 
   const checkPasswordStrength = () => {
@@ -174,7 +171,6 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Email Field */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Email Address
@@ -227,7 +223,6 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Password Field */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Password
@@ -295,7 +290,6 @@ export default function SignUp() {
                 </button>
               </div>
 
-              {/* Password Strength Indicator */}
               {password && (
                 <div className="mt-3">
                   <div className="flex justify-between items-center mb-2">
@@ -436,7 +430,6 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -470,7 +463,6 @@ export default function SignUp() {
               )}
             </button>
 
-            {/* Login Link */}
             <div className="text-center pt-6 border-t border-gray-200">
               <p className="text-gray-600">
                 Already have an account?{" "}

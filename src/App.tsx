@@ -1,7 +1,11 @@
 import "./index.css";
 import { Navbar } from "./components/navbar/Navbar";
-import { createBrowserRouter,
-  Outlet, RouterProvider, Navigate} from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import HomeProducts from "./components/product/HomeProducts";
 import Cart from "./components/cart/Cart";
 import { useState, useEffect } from "react";
@@ -64,10 +68,14 @@ function Layout() {
     <>
       <Navbar cartItems={cartItems} user={user} onLogout={logout} />
       <Outlet
-        context={{ addToCart,
-          cartItems, removeFromCart,
-          clearCart, user,
-          login, logout,
+        context={{
+          addToCart,
+          cartItems,
+          removeFromCart,
+          clearCart,
+          user,
+          login,
+          logout,
         }}
       />
     </>
