@@ -1,6 +1,7 @@
 import "./index.css";
 import { Navbar } from "./components/navbar/Navbar";
-import { createBrowserRouter, Outlet, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter,
+  Outlet, RouterProvider, Navigate} from "react-router-dom";
 import HomeProducts from "./components/product/HomeProducts";
 import Cart from "./components/cart/Cart";
 import { useState, useEffect } from "react";
@@ -27,7 +28,6 @@ function Layout() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [user, setUser] = useState<User | null>(null);
 
-  // Check if user is logged in on component mount
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -50,13 +50,11 @@ function Layout() {
     setCartItems([]);
   };
 
-  // Login function (small 'l')
   const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -65,26 +63,24 @@ function Layout() {
   return (
     <>
       <Navbar cartItems={cartItems} user={user} onLogout={logout} />
-      <Outlet context={{ 
-        addToCart, 
-        cartItems, 
-        removeFromCart, 
-        clearCart,
-        user,
-        login, 
-        logout 
-      }} />
+      <Outlet
+        context={{ addToCart,
+          cartItems, removeFromCart,
+          clearCart, user,
+          login, logout,
+        }}
+      />
     </>
   );
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = JSON.parse(localStorage.getItem("user") || "null");
-  
+
   if (!user || !user.isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
@@ -123,7 +119,7 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,  
+        element: <Login />,
       },
       {
         path: "product/:id",
