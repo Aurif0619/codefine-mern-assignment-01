@@ -19,9 +19,7 @@ export const Login: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Login
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800">Login</h1>
           <p className="text-gray-500 text-sm mt-2">
             Welcome back, please login
           </p>
@@ -29,9 +27,7 @@ export const Login: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="text-sm font-medium text-gray-700">
-              Email
-            </label>
+            <label className="text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               required
@@ -63,7 +59,6 @@ export const Login: React.FC = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? (
-             
                   <svg
                     width="20"
                     height="20"
@@ -115,9 +110,12 @@ export const Login: React.FC = () => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Don’t have an account?
-          <span className="text-yellow-500 cursor-pointer hover:underline ml-1">
-              Sign Up
-            </span>
+            <Link to="/sign-up">
+              {" "}
+              <span className="text-yellow-500 cursor-pointer hover:underline ml-1">
+                Sign Up
+              </span>
+            </Link>
           </p>
         </div>
       </div>

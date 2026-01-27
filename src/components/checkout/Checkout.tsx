@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useOutletContext } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 type CartItem = {
   id: number;
@@ -17,21 +17,21 @@ type OutletContextType = {
 export const Checkout = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    zipCode: '',
-    country: 'Pakistan',
-    paymentMethod: 'credit-card'
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "Pakistan",
+    paymentMethod: "credit-card",
   });
-  
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [orderNumber, setOrderNumber] = useState('');
+  const [orderNumber, setOrderNumber] = useState("");
 
   const context = useOutletContext() as OutletContextType;
   const cartItems = context?.cartItems || [];
@@ -43,53 +43,56 @@ export const Checkout = () => {
   const grandTotal = cartTotal + shippingCost + taxAmount;
 
   const generateOrderNumber = () => {
-    return 'ORD-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    return "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.city.trim()) newErrors.city = 'City is required';
-    if (!formData.zipCode.trim()) newErrors.zipCode = 'Zip code is required';
-    
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.zipCode.trim()) newErrors.zipCode = "Zip code is required";
+
     return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
+
     setIsProcessing(true);
-    
+
     setTimeout(() => {
       const newOrderNumber = generateOrderNumber();
       setOrderNumber(newOrderNumber);
@@ -99,9 +102,9 @@ export const Checkout = () => {
       if (clearCart) {
         clearCart();
       }
-      
+
       setTimeout(() => {
-        navigate('/');
+        navigate("/");
       }, 5000);
     }, 2000);
   };
@@ -111,12 +114,26 @@ export const Checkout = () => {
       <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center bg-white rounded-2xl shadow-xl p-8">
           <div className="w-20 h-20 bg-gradient-to-r from-rose-100 to-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            <svg
+              className="w-10 h-10 text-rose-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+              />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-3">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Add some products to proceed to checkout</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">
+            Your cart is empty
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Add some products to proceed to checkout
+          </p>
           <Link
             to="/"
             className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-full hover:from-yellow-600 hover:to-orange-600 transition-colors shadow-lg hover:shadow-xl"
@@ -133,14 +150,29 @@ export const Checkout = () => {
       <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white flex items-center justify-center px-4 py-12">
         <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 text-center">
           <div className="w-24 h-24 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-12 h-12 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           </div>
-          
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Order Confirmed! 🎉</h2>
-          <p className="text-gray-600 mb-6">Thank you for your purchase. Your order has been successfully placed.</p>
-          
+
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Order Confirmed! 🎉
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Thank you for your purchase. Your order has been successfully
+            placed.
+          </p>
+
           <div className="bg-gradient-to-r from-rose-50 to-red-50 rounded-xl p-6 mb-8">
             <div className="flex flex-col items-center">
               <span className="text-sm text-gray-600 mb-2">Order Number</span>
@@ -149,22 +181,28 @@ export const Checkout = () => {
               </span>
             </div>
           </div>
-          
+
           <div className="space-y-4 mb-8">
             <div className="flex justify-between items-center py-3 border-b border-gray-100">
               <span className="text-gray-600">Order Total</span>
-              <span className="text-xl font-bold text-gray-800">${grandTotal.toFixed(2)}</span>
+              <span className="text-xl font-bold text-gray-800">
+                ${grandTotal.toFixed(2)}
+              </span>
             </div>
             <div className="flex justify-between items-center py-3 border-b border-gray-100">
               <span className="text-gray-600">Payment Method</span>
-              <span className="font-medium text-gray-800 capitalize">{formData.paymentMethod.replace('-', ' ')}</span>
+              <span className="font-medium text-gray-800 capitalize">
+                {formData.paymentMethod.replace("-", " ")}
+              </span>
             </div>
             <div className="flex justify-between items-center py-3">
               <span className="text-gray-600">Estimated Delivery</span>
-              <span className="font-medium text-green-600">3-5 business days</span>
+              <span className="font-medium text-green-600">
+                3-5 business days
+              </span>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <Link
               to="/"
@@ -188,7 +226,9 @@ export const Checkout = () => {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent mb-2">
             Checkout
           </h1>
-          <p className="text-gray-600">Complete your purchase in just a few steps</p>
+          <p className="text-gray-600">
+            Complete your purchase in just a few steps
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -197,7 +237,7 @@ export const Checkout = () => {
               <h2 className="text-xl font-bold text-gray-800 mb-6 pb-4 border-b border-rose-100">
                 Shipping Information
               </h2>
-              
+
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* First Name */}
@@ -210,14 +250,16 @@ export const Checkout = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.firstName ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter first name"
                     />
                     {errors.firstName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.firstName}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Last Name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -228,14 +270,16 @@ export const Checkout = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.lastName ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter last name"
                     />
                     {errors.lastName && (
-                      <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.lastName}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Email */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -246,14 +290,16 @@ export const Checkout = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter email address"
                     />
                     {errors.email && (
-                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.email}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Phone */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -264,14 +310,16 @@ export const Checkout = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.phone ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter phone number"
                     />
                     {errors.phone && (
-                      <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.phone}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Address */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -282,14 +330,16 @@ export const Checkout = () => {
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.address ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.address ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter street address"
                     />
                     {errors.address && (
-                      <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.address}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* City */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -300,14 +350,14 @@ export const Checkout = () => {
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.city ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter city"
                     />
                     {errors.city && (
                       <p className="mt-1 text-sm text-red-600">{errors.city}</p>
                     )}
                   </div>
-                  
+
                   {/* Zip Code */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -318,14 +368,16 @@ export const Checkout = () => {
                       name="zipCode"
                       value={formData.zipCode}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.zipCode ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.zipCode ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all`}
                       placeholder="Enter ZIP code"
                     />
                     {errors.zipCode && (
-                      <p className="mt-1 text-sm text-red-600">{errors.zipCode}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.zipCode}
+                      </p>
                     )}
                   </div>
-                  
+
                   {/* Country */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -345,62 +397,98 @@ export const Checkout = () => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="mt-8 pt-6 border-t border-rose-100">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Payment Method</h3>
-                  
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">
+                    Payment Method
+                  </h3>
+
                   <div className="space-y-4">
-                    {['credit-card', 'paypal', 'cash-on-delivery'].map((method) => (
-                      <label key={method} className="flex items-center p-4 border border-gray-300 rounded-lg hover:border-yellow-500 hover:bg-yellow-50 cursor-pointer transition-all">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value={method}
-                          checked={formData.paymentMethod === method}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-yellow-500 focus:ring-yellow-500"
-                        />
-                        <div className="ml-4">
-                          <span className="font-medium text-gray-800 capitalize">
-                            {method.replace('-', ' ')}
-                          </span>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {method === 'credit-card' && 'Pay with your credit or debit card'}
-                            {method === 'paypal' && 'Pay securely with your PayPal account'}
-                            {method === 'cash-on-delivery' && 'Pay when your order arrives'}
-                          </p>
-                        </div>
-                      </label>
-                    ))}
+                    {["credit-card", "paypal", "cash-on-delivery"].map(
+                      (method) => (
+                        <label
+                          key={method}
+                          className="flex items-center p-4 border border-gray-300 rounded-lg hover:border-yellow-500 hover:bg-yellow-50 cursor-pointer transition-all"
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value={method}
+                            checked={formData.paymentMethod === method}
+                            onChange={handleInputChange}
+                            className="w-5 h-5 text-yellow-500 focus:ring-yellow-500"
+                          />
+                          <div className="ml-4">
+                            <span className="font-medium text-gray-800 capitalize">
+                              {method.replace("-", " ")}
+                            </span>
+                            <p className="text-sm text-gray-600 mt-1">
+                              {method === "credit-card" &&
+                                "Pay with your credit or debit card"}
+                              {method === "paypal" &&
+                                "Pay securely with your PayPal account"}
+                              {method === "cash-on-delivery" &&
+                                "Pay when your order arrives"}
+                            </p>
+                          </div>
+                        </label>
+                      ),
+                    )}
                   </div>
                 </div>
-                
+
                 <div className="mt-8 pt-6 border-t border-rose-100">
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className={`w-full py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-full hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center ${isProcessing ? 'opacity-75 cursor-not-allowed' : ''}`}
+                    className={`w-full py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-medium rounded-full hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center ${isProcessing ? "opacity-75 cursor-not-allowed" : ""}`}
                   >
                     {isProcessing ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Processing Order...
                       </>
                     ) : (
                       <>
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Place Order - ${grandTotal.toFixed(2)}
                       </>
                     )}
                   </button>
-                  
+
                   <p className="text-sm text-gray-500 text-center mt-4">
-                    By placing your order, you agree to our Terms of Service and Privacy Policy
+                    By placing your order, you agree to our Terms of Service and
+                    Privacy Policy
                   </p>
                 </div>
               </form>
@@ -412,7 +500,7 @@ export const Checkout = () => {
               <h2 className="text-xl font-bold text-gray-800 mb-6 pb-4 border-b border-rose-100">
                 Order Summary
               </h2>
-              
+
               <div className="space-y-4 mb-6">
                 {cartItems.slice(0, 3).map((item) => (
                   <div key={item.id} className="flex items-center">
@@ -424,19 +512,23 @@ export const Checkout = () => {
                       />
                     </div>
                     <div className="ml-4 flex-grow">
-                      <h4 className="text-sm font-medium text-gray-800 truncate">{item.title}</h4>
-                      <p className="text-rose-600 font-bold">${item.price.toFixed(2)}</p>
+                      <h4 className="text-sm font-medium text-gray-800 truncate">
+                        {item.title}
+                      </h4>
+                      <p className="text-rose-600 font-bold">
+                        ${item.price.toFixed(2)}
+                      </p>
                     </div>
                   </div>
                 ))}
-                
+
                 {cartItems.length > 3 && (
                   <p className="text-sm text-gray-500 text-center">
                     +{cartItems.length - 3} more items
                   </p>
                 )}
               </div>
-              
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
@@ -444,8 +536,12 @@ export const Checkout = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span className={`font-medium ${shippingCost === 0 ? 'text-green-600' : ''}`}>
-                    {shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+                  <span
+                    className={`font-medium ${shippingCost === 0 ? "text-green-600" : ""}`}
+                  >
+                    {shippingCost === 0
+                      ? "FREE"
+                      : `$${shippingCost.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -453,14 +549,14 @@ export const Checkout = () => {
                   <span className="font-medium">${taxAmount.toFixed(2)}</span>
                 </div>
               </div>
-              
+
               <div className="flex justify-between items-center py-4 border-t border-b border-rose-100">
                 <span className="text-lg font-bold text-gray-800">Total</span>
                 <span className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-red-600 bg-clip-text text-transparent">
                   ${grandTotal.toFixed(2)}
                 </span>
               </div>
-              
+
               <div className="mt-6">
                 <div className="flex">
                   <input
@@ -470,17 +566,27 @@ export const Checkout = () => {
                   />
                   <button
                     type="button"
-                    className="px-6 py-3 bg-gray-800 text-white font-medium rounded-r-lg hover:bg-gray-900 transition-colors"
+                    className="px-6 py-3 bg-red-500 text-white font-medium rounded-r-lg hover:bg-red-600 transition-colors"
                   >
                     Apply
                   </button>
                 </div>
               </div>
-              
+
               <div className="mt-6 pt-6 border-t border-rose-100">
                 <div className="flex items-center text-gray-600 text-sm">
-                  <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <svg
+                    className="w-5 h-5 text-green-500 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
                   </svg>
                   <span>100% Secure Payment</span>
                 </div>
@@ -488,7 +594,7 @@ export const Checkout = () => {
                   Your payment information is encrypted and secure.
                 </p>
               </div>
-              
+
               {/* Continue Shopping */}
               <div className="mt-6">
                 <Link
