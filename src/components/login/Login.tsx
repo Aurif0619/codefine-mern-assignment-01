@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 type OutletContextType = {
@@ -13,8 +13,18 @@ export const Login: React.FC = () => {
     {},
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const context = useOutletContext() as OutletContextType;
+
+  useEffect(() => {
+    if (showConfetti) {
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showConfetti]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -63,10 +73,11 @@ export const Login: React.FC = () => {
         }
 
         setIsLoading(false);
-        
-        navigate("/");
+        setShowConfetti(true);
 
-        alert("Login successful! Welcome back.");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
         setIsLoading(false);
         setErrors({
@@ -80,7 +91,50 @@ export const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-8">
-      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+        {/* Confetti Container */}
+        {showConfetti && (
+          <div className="fixed inset-0 pointer-events-none z-50">
+            {/* Confetti Pieces */}
+            {[...Array(100)].map((_, i) => (
+              <div
+                key={i}
+                className={`absolute w-2 h-2 rounded-full animate-confetti-drop`}
+                style={{
+                  backgroundColor: [
+                    '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444',
+                    '#06B6D4', '#8B5CF6', '#10B981', '#F59E0B', '#3B82F6'
+                  ][i % 10],
+                  left: `${Math.random() * 100}%`,
+                  top: '-20px',
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${1 + Math.random() * 2}s`,
+                }}
+              />
+            ))}
+            
+            {/* Success Message Modal */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 animate-scale-in">
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Login Successful!</h3>
+                  <p className="text-gray-600 mb-4">Welcome back! Redirecting to home page...</p>
+                  <div className="flex justify-center space-x-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="bg-gradient-to-r from-red-500 to-red-500 p-6 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
           <p className="text-white/90">Sign in to your account</p>
