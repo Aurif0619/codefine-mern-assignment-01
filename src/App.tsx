@@ -13,6 +13,7 @@ import ProductDetail from "./components/product-detail/ProductDetail";
 import { Checkout } from "./components/checkout/Checkout";
 import { Login } from "./components/login/Login";
 import SignUp from "./components/sign-up/SignUp";
+import Logout from "./components/logout/Logout";
 
 export type CartItem = {
   id: number;
@@ -128,6 +129,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "logout",
+        element: <Logout />,
       },
       {
         path: "product/:id",

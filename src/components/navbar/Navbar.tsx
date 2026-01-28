@@ -31,7 +31,8 @@ export const Navbar = ({
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Products", href: "/products" },
+    { label: "About", href: "/" },
+    { label: "ContactUs", href: "/checkout" },
   ];
 
   const cartCount = cartItems.length;

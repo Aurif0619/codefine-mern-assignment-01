@@ -47,3 +47,19 @@ code {
 .animate-bounce-slow {
   animation: bounce-slow 2s infinite;
 }
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.4s ease-out;
+}
