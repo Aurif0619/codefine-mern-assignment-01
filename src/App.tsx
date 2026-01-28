@@ -5,6 +5,7 @@ import {
   Outlet,
   RouterProvider,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import HomeProducts from "./components/product/HomeProducts";
 import Cart from "./components/cart/Cart";
@@ -32,11 +33,15 @@ type User = {
 function Layout() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      if (parsedUser.isLoggedIn) {
+        setUser(parsedUser);
+      }
     }
   }, []);
 
@@ -56,13 +61,15 @@ function Layout() {
   };
 
   const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+    const userWithLogin = { ...userData, isLoggedIn: true };
+    setUser(userWithLogin);
+    localStorage.setItem("user", JSON.stringify(userWithLogin));
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    navigate("/signup"); 
   };
 
   return (
@@ -84,10 +91,22 @@ function Layout() {
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
 
   if (!user || !user.isLoggedIn) {
     return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+const AlreadyLoggedInRoute = ({ children }: { children: React.ReactNode }) => {
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
+
+  if (user && user.isLoggedIn) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -124,15 +143,27 @@ const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <SignUp />,
+        element: (
+          <AlreadyLoggedInRoute>
+            <SignUp />
+          </AlreadyLoggedInRoute>
+        ),
       },
       {
         path: "login",
-        element: <Login />,
+        element: (
+          <AlreadyLoggedInRoute>
+            <Login />
+          </AlreadyLoggedInRoute>
+        ),
       },
       {
         path: "logout",
-        element: <Logout />,
+        element: (
+          <ProtectedRoute>
+            <Logout />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "product/:id",
