@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
+
+type OutletContextType = {
+  login?: (userData: any) => void;
+};
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -10,6 +14,7 @@ export const Login: React.FC = () => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const context = useOutletContext() as OutletContextType;
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -38,8 +43,6 @@ export const Login: React.FC = () => {
 
     setIsLoading(true);
     setTimeout(() => {
-      console.log({ email, password });
-
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       const user = users.find(
         (u: any) => u.email === email && u.password === password,
@@ -52,9 +55,15 @@ export const Login: React.FC = () => {
           isLoggedIn: true,
           token: `token_${Date.now()}`,
         };
+        
         localStorage.setItem("user", JSON.stringify(userData));
 
+        if (context?.login) {
+          context.login(userData);
+        }
+
         setIsLoading(false);
+        
         navigate("/");
 
         alert("Login successful! Welcome back.");

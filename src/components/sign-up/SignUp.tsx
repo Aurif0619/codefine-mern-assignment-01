@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
+
+type OutletContextType = {
+  login?: (userData: any) => void;
+};
+
 export default function SignUp() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -13,6 +18,7 @@ export default function SignUp() {
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const context = useOutletContext() as OutletContextType;
 
   const validatePassword = (password: string): boolean => {
     const passwordRegex =
@@ -62,8 +68,6 @@ export default function SignUp() {
     setIsLoading(true);
 
     setTimeout(() => {
-      console.log({ name, email, password });
-
       const userData = {
         name,
         email,
@@ -73,13 +77,26 @@ export default function SignUp() {
       };
 
       const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      
+      const userExists = existingUsers.find((user: any) => user.email === email);
+      if (userExists) {
+        setIsLoading(false);
+        setErrors({ email: "User with this email already exists" });
+        return;
+      }
+
       localStorage.setItem(
         "users",
         JSON.stringify([...existingUsers, userData]),
       );
       localStorage.setItem("user", JSON.stringify(userData));
 
+      if (context?.login) {
+        context.login(userData);
+      }
+
       setIsLoading(false);
+      
       navigate("/");
 
       alert("Account created successfully! You are now logged in.");
@@ -109,6 +126,7 @@ export default function SignUp() {
   };
 
   const passwordStrength = checkPasswordStrength();
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 via-white to-orange-50 px-4 py-8">
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden">
@@ -255,7 +273,6 @@ export default function SignUp() {
                   className={`mt-1 w-full pl-10 pr-12 py-3.5 rounded-xl border ${errors.password ? "border-red-300" : "border-gray-300"} focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-colors`}
                 />
 
-                {/* Eye Icon */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -313,7 +330,6 @@ export default function SignUp() {
                 </div>
               )}
 
-              {/* Password Requirements */}
               <div className="mt-3">
                 <p className="text-xs text-gray-600 mb-2 font-medium">
                   Password must contain:
