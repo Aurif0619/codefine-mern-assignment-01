@@ -12,9 +12,10 @@ import Cart from "./components/cart/Cart";
 import { useState, useEffect } from "react";
 import ProductDetail from "./components/product-detail/ProductDetail";
 import { Checkout } from "./components/checkout/Checkout";
-import { Login } from "./components/login/Login";
-import SignUp from "./components/sign-up/SignUp";
 import Logout from "./components/logout/Logout";
+import SignUp from "./components/[auth]/sign-up/SignUp";
+import { Login } from "./components/[auth]/login/Login";
+import NotFound from "./components/not-found/NotFound";
 
 export type CartItem = {
   id: number;
@@ -172,6 +173,10 @@ const router = createBrowserRouter([
             <ProductDetail />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "*",
+        element: <NotFound />
       },
     ],
   },

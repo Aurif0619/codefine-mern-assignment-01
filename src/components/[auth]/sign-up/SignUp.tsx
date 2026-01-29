@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
-
-type OutletContextType = {
-  login?: (userData: any) => void;
-};
+import { Link, useNavigate} from "react-router-dom";
 
 export default function SignUp() {
   const [name, setName] = useState<string>("");
@@ -18,7 +14,6 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
-  const context = useOutletContext() as OutletContextType;
 
   useEffect(() => {
     if (showConfetti) {
